@@ -8,13 +8,21 @@ const buttons = document.querySelectorAll(".calc-button");
 
 // Select the calculator element
 const calculator = document.getElementById('calculator');
-
+const startScreen = document.getElementById("start-screen");
 // Load your sound
-const introSound = new Audio('sounds/intro.mp3');
+const introSound = new Audio('sounds/intro.wav');
 
-setTimeout(() => {
-    introSound.play();
-}, 200)
+startScreen.addEventListener("click", () => {
+    // Play sound
+    introSound.play().catch(e => console.error("Autoplay failed:", e));
+
+    // Hide start screen
+    startScreen.style.display = "none";
+
+    // Trigger calculator animation
+    calculator.style.opacity = "0"; // reset
+    calculator.style.animation = "fadeIn 2.4s ease-out forwards";
+});
 
 // Speech recognition setup
 let recognition; //variable will hold the speech recognition object
@@ -33,7 +41,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
     recognition.onstart = () => {
         isRecording = true;
-        display.textContent = "..."; //give user feedback
+        display.textContent = "..."; //signifies awaiting user feedback
         console.log("Speech recognition started");
     };
 
